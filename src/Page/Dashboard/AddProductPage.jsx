@@ -97,7 +97,7 @@ const AddProductPage = () => {
           )}
         </div>
 
-        {/* Product Name */}
+     
         <div className="form-group">
           <label>Product Name *</label>
           <input
