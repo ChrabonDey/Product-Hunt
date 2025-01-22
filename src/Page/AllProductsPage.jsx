@@ -20,7 +20,7 @@ const AllProductsPage = () => {
           .filter(product => product.isFeatured)
           .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-        setProducts(sortedProducts.slice(0, 9)); // Fetch 9 products, to display 3 rows of 3
+        setProducts(sortedProducts.slice(0, 9)); 
       } catch (error) {
         console.error('Error fetching products:', error);
       }
