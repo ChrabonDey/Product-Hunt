@@ -84,7 +84,7 @@ const AddProductPage = () => {
         <p>You can only add one product since you are not subscribed.</p>
       )}
       <form className="add-product-form" onSubmit={handleSubmit(onSubmit)}>
-        {/* Category */}
+       
         <div className="form-group">
           <label>Category *</label>
           <input
