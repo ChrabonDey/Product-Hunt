@@ -110,7 +110,7 @@ const AddProductPage = () => {
           )}
         </div>
 
-        {/* Product Image URL */}
+      
         <div className="form-group">
           <label>Product Image URL *</label>
           <input
