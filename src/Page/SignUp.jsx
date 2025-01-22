@@ -81,7 +81,7 @@ const SignUp = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full">
-        {/* Left Image Section */}
+      
         <div className="md:w-1/2 flex justify-center items-center p-6">
           <Lottie animationData={ani}></Lottie>
         </div>
