@@ -22,7 +22,7 @@ const DashBoard = () => {
           <h1 className="text-2xl font-bold uppercase">Product Hunt</h1>
         </div>
         <ul className="menu px-4 space-y-2">
-          {/* User Role Links */}
+        
           {!isAdmin && !isModerator && (
             <>
               
@@ -56,7 +56,7 @@ const DashBoard = () => {
             </>
           )}
 
-          {/* Moderator Role Links */}
+        
           {isModerator && (
             <>
               <li>
