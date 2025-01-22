@@ -136,7 +136,7 @@ const AddProductPage = () => {
           )}
         </div>
 
-        {/* Tags */}
+   
         <div className="form-group">
           <label>Tags</label>
           <ReactTags
