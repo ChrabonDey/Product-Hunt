@@ -25,7 +25,7 @@ const Banner = () => {
           disableOnInteraction: false,
         }}
       >
-        {/* Slide 1 */}
+        
         <SwiperSlide>
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full h-full p-6">
             <div className="flex-1 text-start text-black">
