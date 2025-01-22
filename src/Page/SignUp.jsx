@@ -24,7 +24,7 @@ const SignUp = () => {
     createUser(data.email, data.password)
       .then((result) => {
         const loggedUser = result.user;
-        // Use Firebase's updateProfile function
+       
         updateProfile(loggedUser, {
           displayName: data.name,
           photoURL: data.photoURL,
