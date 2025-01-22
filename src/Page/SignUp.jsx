@@ -36,7 +36,7 @@ const SignUp = () => {
               icon: 'success',
               draggable: true,
             });
-            navigate('/'); // Redirect after successful signup
+            navigate('/'); 
           })
           .catch((error) => {
             console.error('Profile Update Error:', error);
