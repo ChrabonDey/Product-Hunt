@@ -148,7 +148,7 @@ const AddProductPage = () => {
           />
         </div>
 
-        {/* External Link */}
+        
         <div className="form-group">
           <label>External Link</label>
           <input
