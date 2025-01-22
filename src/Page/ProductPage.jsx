@@ -116,7 +116,7 @@ const ProductPage = () => {
 
   return (
     <div className="product-page max-w-7xl mx-auto px-4 py-8">
-      {/* Product Details Section */}
+     
       <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-10">
         <img src={product.image} alt={product.name} className="w-full h-96 object-cover" />
         <div className="p-6">
