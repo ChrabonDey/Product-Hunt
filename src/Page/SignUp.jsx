@@ -86,7 +86,7 @@ const SignUp = () => {
           <Lottie animationData={ani}></Lottie>
         </div>
 
-        {/* Right Form Section */}
+      
         <div className="md:w-1/2 p-8">
           <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
