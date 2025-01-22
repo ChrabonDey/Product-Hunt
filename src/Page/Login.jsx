@@ -7,7 +7,7 @@ import { FaGoogle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 
 const Login = () => {
-  const { googleSign, signIn } = UseAuth(); // Single destructure
+  const { googleSign, signIn } = UseAuth(); 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.pathname || "/";
@@ -74,7 +74,6 @@ const Login = () => {
           <Lottie animationData={animation} />
         </div>
 
-        {/* Right Form Section */}
         <div className="md:w-1/2 p-8">
           <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
           <form onSubmit={handleSubmit}>
