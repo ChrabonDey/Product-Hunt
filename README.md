@@ -5,7 +5,7 @@ Welcome to **Product Hunt**, an innovative platform for discovering and sharing 
 ---
 
 ## 🔗 **Live Site URL**
-[Visit Product Hunt Live!](#)
+[Visit Product Hunt Live!](https://product-hunt-687fb.web.app/)
 
 ---
 
@@ -106,8 +106,8 @@ ProductHunt/
 ## 🛠️ **Setup Instructions**
 
 1. Clone the repositories:
-   - **Frontend**: [Client Repository](#)
-   - **Backend**: [Server Repository](#)
+   - **Frontend**: [Client Repository](https://github.com/ChrabonDey/Product-Hunt?tab=readme-ov-file)
+   - **Backend**: [Server Repository](https://github.com/ChrabonDey/Product_Hunt_Server)
 
 2. Install dependencies:
    ```bash
