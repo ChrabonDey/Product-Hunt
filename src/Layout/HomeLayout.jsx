@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "../Shared/Footer";
 import Navbar from "../Shared/Navbar";
+import BackgroundAnimation from "../BackGroundAnimation";
 
 
 
@@ -22,7 +23,9 @@ const HomeLayout = () => {
         }
     },[]);
     return (
-        <div>
+        <div className="relative w-full min-h-screen">
+            <BackgroundAnimation></BackgroundAnimation>
+          <div className="relative ">
              <header
         className={`sticky top-0 z-50 transition-all duration-300 ${
           isSticky ? "bg-[#dbefff] shadow-md" : "bg-transparent"
@@ -38,6 +41,7 @@ const HomeLayout = () => {
         {noHeaderFooter || noHeadersFooters || <Footer />}
       </section>
 
+        </div>
         </div>
     );
 };

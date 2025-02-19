@@ -21,6 +21,8 @@ import Payment from '../Page/Dashboard/Payment';
 import UpdateProductPage from '../Page/Dashboard/UpdateProductPage';
 import AdminCouponsPage from '../Page/Dashboard/Admin/AdminCuponPage';
 import NotFound from '../NotFound';
+import About from '../Page/About/About';
+import Contact from '../Page/Contact/Contact';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path:"/about",
+        element:<About></About>
+      },
+      {
+        path:"/contact",
+        element:<Contact></Contact>
+      },
+      {
         path: "/login", // Login path (relative to "/")
         element: <Login />,
       },
@@ -41,7 +51,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/ProductPage/:id",
-        element:<PrivateRoute><ProductPage /></PrivateRoute>, 
+        element:<ProductPage />, 
       },
       {
         path:"/Products",

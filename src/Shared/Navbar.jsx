@@ -45,7 +45,11 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <NavLink to="/" className="hover:text-[#4978ff]">Home</NavLink>
+              <NavLink to="/about" className="hover:text-[#4978ff]">About</NavLink>
               <NavLink to="/Products" className="hover:text-[#4978ff]">Products</NavLink>
+              <NavLink to="/contact" className="hover:text-[#4978ff]">Products</NavLink>
+              
+
               {user && <NavLink to="/dashboard" className="hover:text-[#4978ff]">DashBoard</NavLink>}
               
             </ul>
@@ -66,7 +70,9 @@ const Navbar = () => {
         {/* Navbar Center */}
         <div className="navbar-center hidden lg:flex gap-6">
           <NavLink className="hover:text-[#4978ff]" to="/">Home</NavLink>
+          <NavLink className="hover:text-[#4978ff]" to="/about">About</NavLink>
           <NavLink className="hover:text-[#4978ff]" to="/Products">Products</NavLink>
+          <NavLink className="hover:text-[#4978ff]" to="/contact">Contact</NavLink>
           
           {user && (
             <>
