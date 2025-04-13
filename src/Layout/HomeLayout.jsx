@@ -7,7 +7,7 @@ import BackgroundAnimation from "../BackGroundAnimation";
 
 
 const HomeLayout = () => {
-    const [isSticky,setSticky]=useState(false);
+    const [isSticky,setSticky]=useState(" ");
     const location=useLocation();
     const noHeaderFooter=location.pathname.includes('login');
     const noHeadersFooters=location.pathname.includes('signup')
