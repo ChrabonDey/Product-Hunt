@@ -1,122 +1,113 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/pagination";
-import { Pagination, Autoplay } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 
-import image1 from "../assets/Web-dev.png";
-import image2 from "../assets/Game.png";
-import image3 from "../assets/2150586589.jpg";
-import image5 from "../assets/Robot-1.jpg";
-import image4 from "../assets/diamond-lattice.webp";
+import img1 from "../assets/robo1.jpg";
+import img2 from "../assets/person-using-ar-technology-perform-their-occupation.jpg";
+import img3 from "../assets/robo2.jpg";
+import img4 from "../assets/person-using-ar-technology-perform-their-occupation.jpg";
+import img5 from "../assets/neon-3d-cybermonday-celebration-template.jpg";
+import img6 from "../assets/anthropomorphic-robot-performing-regular-human-job-future.jpg"
 
 const Banner = () => {
   return (
-    <div
-      className="my-6 bg-[#dbefff] px-4 md:px-20 rounded-lg shadow-lg h-[60vh] md:h-[70vh]"
-      style={{ backgroundImage: `url("${image4}")` }}
-    >
-      <Swiper
-        pagination={{ clickable: true }}
-        modules={[Pagination, Autoplay]}
-        className="w-full h-full"
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-      >
-        
-        <SwiperSlide>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full h-full p-6">
-            <div className="flex-1 text-start text-black">
-              <div className="flex items-center">
-                <span className="text-xl font-semibold border-2 rounded-full border-white px-4">
-                  Discover AI Tools
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 w-full md:w-3/4">
-                Boost Productivity <br /> with AI-Powered Solutions
-              </h2>
-              <p className="text-lg opacity-70 w-full md:w-3/4 mb-4">
-                Explore cutting-edge AI tools that simplify tasks and enhance
-                efficiency in your daily workflow.
-              </p>
-            </div>
-            <div className="flex-1 relative">
-              <img src={image3} alt="AI Tools" className="" />
-            </div>
-          </div>
-        </SwiperSlide>
+    <div className="py-12 px-4 md:px-16 my-10 bg-black">
+      {/* Title */}
+      <h2 className="text-white text-3xl md:text-5xl font-bold text-center mb-12 tracking-wide">
+        What would you like <span className="text-yellow-400">to create?</span>
+      </h2>
 
-        {/* Slide 2 */}
-        <SwiperSlide>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full h-full p-6">
-            <div className="flex-1 text-start text-black">
-              <div className="flex items-center">
-                <span className="text-xl font-semibold border-2 rounded-full border-white px-4">
-                  Explore Web Tools
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 w-full md:w-3/4">
-                Simplify Web Development <br /> with Advanced Tools
-              </h2>
-              <p className="text-lg opacity-70 w-full md:w-3/4 mb-4">
-                Access powerful web tools to create, manage, and optimize your
-                projects effortlessly.
-              </p>
-            </div>
-            <div className="flex-1 relative">
-              <img src={image1} alt="Web Tools" className="" />
-            </div>
-          </div>
-        </SwiperSlide>
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Swiper Card */}
+        <div className="lg:row-span-3 relative rounded-xl overflow-hidden shadow-xl">
+          <Swiper
+            modules={[Autoplay]}
+            autoplay={{ delay: 3500 }}
+            loop
+            className="w-full h-full"
+          >
+            {[img1, img2, img3].map((image, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="w-full h-full bg-cover bg-center transition-transform duration-300 hover:scale-105"
+                  style={{ backgroundImage: `url(${image})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70"></div>
+                  <div className="absolute inset-0 flex items-center justify-start px-6">
+                    <div className="backdrop-blur-sm text-left bg-white/10 p-6 rounded-lg text-white max-w-md space-y-2">
+                      <h3 className="text-3xl font-bold text-yellow-400">
+                        Talent Program
+                      </h3>
+                      <p className="text-lg leading-snug">
+                        Join our elite program and push the boundaries of
+                        creativity and technology.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
 
-        {/* Slide 3 */}
-        <SwiperSlide>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full h-full p-6">
-            <div className="flex-1 text-start text-black">
-              <div className="flex items-center">
-                <span className="text-xl font-semibold border-2 rounded-full border-white px-4">
-                  Dive Into Gaming
-                </span>
+        {/* Mid 3 Cards */}
+        {[
+          {
+            title: "Best Ai products",
+            description:
+              "High fidelity AI product you can found here which is a new",
+            image: img5,
+          },
+          {
+            title: "Trendy AI",
+            description:
+              "Produce low-poly meshes with hand-crafted precision at lightning speed",
+            image: img3,
+          },
+          {
+            title: "New AI Tools",
+            description:
+              "Smart texture gen, style transfer, magic texture brush & PBR all in one.",
+            image: img6,
+          },
+        ].map((card, index) => (
+          <div
+            key={index}
+            className="relative h-[250px] bg-cover bg-center rounded-xl overflow-hidden group shadow-lg"
+            style={{ backgroundImage: `url(${card.image})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300 group-hover:opacity-90"></div>
+            <div className="absolute inset-0 flex items-end justify-start p-5">
+              <div className="text-white space-y-2">
+                <h3 className="text-xl font-bold text-yellow-400">
+                  {card.title}
+                </h3>
+                <p className="text-sm opacity-90">{card.description}</p>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 w-full md:w-3/4">
-                Unleash Fun <br /> with Trending Games
-              </h2>
-              <p className="text-lg opacity-70 w-full md:w-3/4 mb-4">
-                Discover the latest and most exciting games to ignite your
-                passion for gaming.
-              </p>
-            </div>
-            <div className="flex-1 relative">
-              <img src={image2} alt="Gaming Products" className="" />
             </div>
           </div>
-        </SwiperSlide>
+        ))}
 
-        {/* Slide 4 */}
-        <SwiperSlide>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full h-full p-6">
-            <div className="flex-1 text-start text-black">
-              <div className="flex items-center">
-                <span className="text-xl font-semibold border-2 rounded-full border-white px-4">
-                  Discover Software
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 w-full md:w-3/4">
-                Enhance Performance <br /> with Top Software Solutions
-              </h2>
-              <p className="text-lg opacity-70 w-full md:w-3/4 mb-4">
-                Find reliable software for business, creativity, and everyday
-                tasks to maximize your potential.
+        {/* Right Full Height Card */}
+        <div
+          className="lg:row-span-3 relative h-[250px] bg-cover bg-center rounded-xl overflow-hidden group shadow-lg"
+          style={{ backgroundImage: `url(${img1})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70"></div>
+          <div className="absolute inset-0 flex items-center justify-start px-6">
+            <div className="backdrop-blur-sm bg-white/10 p-6 rounded-lg text-white max-w-md space-y-2">
+              <h3 className="text-3xl font-bold text-yellow-400">
+                Universal Rig & Animation
+              </h3>
+              <p className="text-lg leading-snug">
+                One-click rigging for any model — smart, fast, universal.
               </p>
             </div>
-            <div className="flex-1 relative">
-              <img src={image5} alt="Software Solutions" className="  rounded-full w-96 h-96 " />
-            </div>
           </div>
-        </SwiperSlide>
-      </Swiper>
+        </div>
+      </div>
     </div>
   );
 };

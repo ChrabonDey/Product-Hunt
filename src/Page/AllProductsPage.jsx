@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import UseAuth from '../Hooks/UseAuth';
 import { useNavigate } from 'react-router-dom';
 import UseAxiosPublic from '../Hooks/UseAxiosPublic';
-import { FaAnglesUp } from 'react-icons/fa6';
+import { FaThumbsUp } from 'react-icons/fa';
 
 const AllProductsPage = () => {
   const { user, loading } = UseAuth();
   const axiosPublic = UseAxiosPublic();
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [uniqueTags, setUniqueTags] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +20,14 @@ const AllProductsPage = () => {
           .filter(product => product.isFeatured)
           .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-        setProducts(sortedProducts.slice(0, 9)); 
+        setProducts(sortedProducts.slice(0, 9));
+
+        const tags = new Set();
+        response.data.forEach(product => {
+          product.tags.forEach(tag => tags.add(tag));
+        });
+        setUniqueTags([...tags]);
+
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -31,7 +38,7 @@ const AllProductsPage = () => {
 
   const handleUpvote = async (productId, userEmail, productOwnerEmail) => {
     if (!userEmail) {
-      navigate('/login'); 
+      navigate('/login');
       return;
     }
 
@@ -61,61 +68,110 @@ const AllProductsPage = () => {
     navigate(`/ProductPage/${productId}`);
   };
 
-  return (
-    <section className="p-6">
-       <h2 className="text-4xl font-bold my-8">All <span className='text-[#006dc7]'>Products</span></h2>
+  const handleTagClick = (tag) => {
+    setSearchTerm(tag);
+  };
 
-      <div className="mb-4">
+  return (
+    <section className="p-6 min-h-screen bg-black text-white my-12">
+      <h2 className="text-4xl font-bold my-8 text-white">
+        All <span className="text-yellow-400">Products</span>
+      </h2>
+
+      {/* Search Input */}
+      <div className="mb-6">
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by tags..."
-          className="input input-bordered w-full"
+          className="w-full h-12 px-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full placeholder-white/70 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
       </div>
 
+      {/* Glassy Tag Buttons */}
+      <div className="flex flex-wrap gap-3 mb-8">
+        {uniqueTags.map((tag, index) => (
+          <button
+            key={index}
+            onClick={() => handleTagClick(tag)}
+            className="px-3 py-1 text-sm rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300 shadow-md hover:shadow-yellow-200/40"
+          >
+            #{tag}
+          </button>
+        ))}
+      </div>
+
+      {/* Product Grid */}
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-white">Loading...</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <div
-            key={product._id}
-            className="card bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-          >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-48 object-cover transition-transform hover:scale-105 duration-300"
-            />
-            <div className="p-4">
-                <h3
-                  className="text-xl font-semibold mb-2 text-gray-800 cursor-pointer hover:text-blue-500"
+              key={product._id}
+              className="backdrop-blur-md bg-gradient-to-br from-white/10 to-black/40 border border-white/20 rounded-xl overflow-hidden shadow-lg text-white p-4 flex flex-col justify-between gap-4 hover:scale-[1.02] transition-all duration-300"
+            >
+              {/* Product Header */}
+              <div className="flex justify-between items-center">
+                <div
                   onClick={() => handleProductClick(product._id)}
+                  className="cursor-pointer"
                 >
-                  {product.name}
-                </h3>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {product.tags.map((tag, index) => (
-                    <span key={index} className="badge badge-outline text-sm">{tag}</span>
-                  ))}
+                  <h3 className="text-xl font-bold text-yellow-400">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-white/80">
+                    by {product?.brand || "Unknown Brand"}
+                  </p>
                 </div>
-                <p className="text-sm mb-4">{product.description}</p>
-                <a href={product.external_link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                  Visit Product
+                <a
+                  href={product.external_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs bg-yellow-400 text-black px-3 py-1 rounded-md hover:bg-yellow-300"
+                >
+                  Visit
                 </a>
-                <div className="mt-4">
-                  <button
-                    className="btn bg-[#006dc7] text-white font-semibold w-full flex items-center"
-                    disabled={user?.email === product.ownerEmail} 
-                    onClick={() => handleUpvote(product._id, user?.email, product.ownerEmail)} 
+              </div>
+
+              {/* Product Image */}
+              <div className="flex justify-center items-center">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="rounded-2xl w-full h-52  object-cover border border-white/10"
+                />
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-white/70 line-clamp-2">
+                {product.description}
+              </p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2">
+                {product.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="text-xs px-2 py-1 bg-white/10 rounded-full"
                   >
-                    <span className="mr-2">
-                      <FaAnglesUp></FaAnglesUp>
-                      </span>{product.votes} Votes
-                  </button>
-                </div>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Votes */}
+              <div className="flex items-center justify-end">
+                <button
+                  className="flex items-center gap-2 text-sm text-yellow-400 hover:text-yellow-300"
+                  onClick={() =>
+                    handleUpvote(product._id, user?.email, product.ownerEmail)
+                  }
+                  disabled={user?.email === product.ownerEmail}
+                >
+                  <FaThumbsUp className="text-lg" /> {product.votes}
+                </button>
               </div>
             </div>
           ))}

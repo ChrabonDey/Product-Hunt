@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
+import { FaEdit, FaTrash, FaTicketAlt } from "react-icons/fa";
 
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
@@ -14,7 +16,6 @@ const AdminCouponsPage = () => {
   const [editingCoupon, setEditingCoupon] = useState(null);
   const axiosSecure = UseAxiosSecure();
 
- 
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
@@ -26,48 +27,41 @@ const AdminCouponsPage = () => {
         Swal.fire("Error", "Failed to load coupons.", "error");
       }
     };
-
     fetchCoupons();
   }, [axiosSecure]);
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-
   const handleAddCoupon = async (e) => {
     e.preventDefault();
-    if (editingCoupon) {
-      
-      try {
+    try {
+      if (editingCoupon) {
         const response = await axiosSecure.put(`/coupons/${editingCoupon._id}`, form);
         if (response.data) {
-          setCoupons((prev) => prev.map((coupon) => coupon._id === editingCoupon._id ? response.data : coupon));
-          Swal.fire("Success", "Coupon updated successfully!", "success");
-          setEditingCoupon(null);
-          setForm({ code: "", expiryDate: "", description: "", discount: "" });
+          setCoupons((prev) =>
+            prev.map((coupon) =>
+              coupon._id === editingCoupon._id ? response.data : coupon
+            )
+          );
+          Swal.fire("Updated!", "Coupon updated successfully!", "success");
         }
-      } catch (error) {
-        Swal.fire("Error", "Failed to update coupon.", "error");
-      }
-    } else {
-      // Adding new coupon
-      try {
+      } else {
         const response = await axiosSecure.post("/coupons", form);
         if (response.data) {
           setCoupons((prev) => [...prev, response.data]);
-          Swal.fire("Success", "Coupon added successfully!", "success");
-          setForm({ code: "", expiryDate: "", description: "", discount: "" });
+          Swal.fire("Created!", "Coupon added successfully!", "success");
         }
-      } catch (error) {
-        Swal.fire("Error", "Failed to add coupon.", "error");
       }
+      setForm({ code: "", expiryDate: "", description: "", discount: "" });
+      setEditingCoupon(null);
+    } catch (error) {
+      Swal.fire("Error", "Operation failed.", "error");
     }
   };
 
-  
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
       title: "Are you sure?",
@@ -75,7 +69,6 @@ const AdminCouponsPage = () => {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
     });
 
     if (confirm.isConfirmed) {
@@ -89,29 +82,37 @@ const AdminCouponsPage = () => {
     }
   };
 
- 
   const handleEdit = (coupon) => {
     setEditingCoupon(coupon);
     setForm({
       code: coupon.code,
-      expiryDate: coupon.expiryDate.split("T")[0], 
+      expiryDate: coupon.expiryDate.split("T")[0],
       description: coupon.description,
       discount: coupon.discount,
     });
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-        <h1 className="text-4xl font-bold text-center  mb-8">Manage <span className='text-[#006dc7]'>Coupons</span></h1>
-      <form className="mb-6 bg-white p-4 shadow rounded" onSubmit={handleAddCoupon}>
-        <div className="grid grid-cols-2 gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black p-8 text-white rounded-xl">
+      <h1 className="text-4xl font-bold text-center mb-10">
+        <span className="text-[#00d9ff]">🎟️ Manage Coupons</span>
+      </h1>
+
+      <motion.form
+        onSubmit={handleAddCoupon}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl mb-10 max-w-4xl mx-auto"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
             name="code"
             value={form.code}
             onChange={handleInputChange}
             placeholder="Coupon Code"
-            className="input input-bordered"
+            className="bg-white/10 text-white placeholder:text-gray-400 p-3 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
           <input
@@ -119,7 +120,7 @@ const AdminCouponsPage = () => {
             name="expiryDate"
             value={form.expiryDate}
             onChange={handleInputChange}
-            className="input input-bordered"
+            className="bg-white/10 text-white p-3 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
           <input
@@ -127,8 +128,8 @@ const AdminCouponsPage = () => {
             name="discount"
             value={form.discount}
             onChange={handleInputChange}
-            placeholder="Discount Amount (%)"
-            className="input input-bordered"
+            placeholder="Discount (%)"
+            className="bg-white/10 text-white placeholder:text-gray-400 p-3 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
           <textarea
@@ -136,40 +137,52 @@ const AdminCouponsPage = () => {
             value={form.description}
             onChange={handleInputChange}
             placeholder="Coupon Description"
-            className="textarea textarea-bordered"
+            className="bg-white/10 text-white placeholder:text-gray-400 p-3 rounded-md border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 col-span-1 md:col-span-2"
             required
           />
         </div>
-        <button type="submit" className="btn  bg-[#006dc7] text-white font-semibold mt-4">
+        <button
+          type="submit"
+          className="mt-4 px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold rounded-full transition"
+        >
           {editingCoupon ? "Update Coupon" : "Add Coupon"}
         </button>
-      </form>
+      </motion.form>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {coupons.length === 0 ? (
-          <p>No coupons available.</p>
+          <p className="text-center col-span-2 text-gray-300">No coupons available.</p>
         ) : (
           coupons.map((coupon) => (
-            <div key={coupon._id} className="card bg-white shadow p-4 rounded">
-              <h3 className="text-lg font-semibold">{coupon.code}</h3>
-              <p>Discount: {coupon.discount}%</p>
-              <p>Expires: {new Date(coupon.expiryDate).toLocaleDateString()}</p>
-              <p>{coupon.description}</p>
-              <div className="mt-2 flex gap-2">
+            <motion.div
+              key={coupon._id}
+              className="bg-white/10 backdrop-blur-xl p-6 rounded-xl border border-white/20 shadow-lg hover:scale-105 transition-transform"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <FaTicketAlt className="text-yellow-400 text-xl" />
+                <h3 className="text-lg font-semibold text-white">{coupon.code}</h3>
+              </div>
+              <p className="text-gray-300">Discount: {coupon.discount}%</p>
+              <p className="text-gray-300">Expires: {new Date(coupon.expiryDate).toLocaleDateString()}</p>
+              <p className="text-gray-400 mt-1">{coupon.description}</p>
+              <div className="mt-4 flex gap-3">
                 <button
-                  className="btn btn-warning btn-sm"
                   onClick={() => handleEdit(coupon)}
+                  className="px-4 py-1 bg-yellow-600 hover:bg-yellow-700 text-white rounded-full flex items-center gap-1"
                 >
-                  Edit
+                  <FaEdit /> Edit
                 </button>
                 <button
-                  className="btn btn-error btn-sm"
                   onClick={() => handleDelete(coupon._id)}
+                  className="px-4 py-1 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center gap-1"
                 >
-                  Delete
+                  <FaTrash /> Delete
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))
         )}
       </div>

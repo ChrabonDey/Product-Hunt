@@ -23,6 +23,9 @@ import AdminCouponsPage from '../Page/Dashboard/Admin/AdminCuponPage';
 import NotFound from '../NotFound';
 import About from '../Page/About/About';
 import Contact from '../Page/Contact/Contact';
+import FaqPage from '../Page/Dashboard/FAQpage';
+import MyProductStatistics from '../Page/Dashboard/MyProductStatistics';
+import TextToImage from '../Page/TextToImage';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +53,10 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
+        path: "/image", 
+        element:<PrivateRoute><TextToImage></TextToImage></PrivateRoute>,
+      },
+      {
         path: "/ProductPage/:id",
         element:<ProductPage />, 
       },
@@ -64,8 +71,16 @@ const router = createBrowserRouter([
       element: <PrivateRoute><DashBoard></DashBoard></PrivateRoute>,
       children:[
              {
-              path:'/dashboard/profile',
+              path:'/dashboard',
               element:<MyProfile></MyProfile>
+             },
+             {
+              path:"/dashboard/faq",
+              element:<FaqPage></FaqPage>
+             },
+             {
+              path:"/dashboard/Stat",
+              element:<MyProductStatistics></MyProductStatistics>
              },
              {
               path:'/dashboard/addProduct',

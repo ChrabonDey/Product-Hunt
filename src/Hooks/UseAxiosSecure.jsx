@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import UseAuth from './UseAuth';
 
 export const axiosSecure =axios.create({
-    baseURL:'https://product-hunt-server-amber.vercel.app'
+    baseURL:'https://product-hunt-server.onrender.com'
 })
 const UseAxiosSecure = () => {
     const navigate=useNavigate();

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
+import { FaUserShield, FaUserCog } from 'react-icons/fa';
 import UseAxiosSecure from '../../../Hooks/UseAxiosSecure';
 
 const ManageUsers = () => {
   const axiosSecure = UseAxiosSecure();
   const [users, setUsers] = useState([]);
 
-  // Fetch all users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -19,86 +20,105 @@ const ManageUsers = () => {
     fetchUsers();
   }, [axiosSecure]);
 
-  // Make a user Admin
   const handleMakeAdmin = async (userId) => {
     try {
       const response = await axiosSecure.patch(`/users/${userId}/role`, { role: 'admin' });
       if (response.status === 200) {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
+        setUsers(prev =>
+          prev.map(user =>
             user._id === userId ? { ...user, role: 'admin' } : user
           )
         );
         Swal.fire('Success', 'User has been made Admin!', 'success');
       }
-    } catch (error) {
+    } catch {
       Swal.fire('Error', 'Failed to make user Admin.', 'error');
     }
   };
 
-  // Make a user Moderator
   const handleMakeModerator = async (userId) => {
     try {
       const response = await axiosSecure.patch(`/users/${userId}/role`, { role: 'moderator' });
       if (response.status === 200) {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
+        setUsers(prev =>
+          prev.map(user =>
             user._id === userId ? { ...user, role: 'moderator' } : user
           )
         );
         Swal.fire('Success', 'User has been made Moderator!', 'success');
       }
-    } catch (error) {
+    } catch {
       Swal.fire('Error', 'Failed to make user Moderator.', 'error');
     }
   };
 
   return (
-    <div className="manage-users-page bg-gray-100 min-h-screen p-8">
-      <h1 className="text-4xl font-bold text-center  mb-8">Manage <span className='text-[#006dc7]'>Users</span></h1>
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table className="table-auto w-full text-left border-collapse">
-          <thead className="bg-blue-600 text-white">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="min-h-screen p-8 bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white rounded-xl"
+    >
+      <h1 className="text-4xl font-extrabold text-center mb-10">
+        Manage <span className="text-blue-500">Users</span>
+      </h1>
+
+      <div className="overflow-x-auto backdrop-blur-md bg-white/5 rounded-2xl shadow-2xl border border-white/10">
+        <table className="min-w-full text-left text-sm">
+          <thead className="bg-blue-900/80 text-white">
             <tr>
-              <th className="px-6 py-3 text-sm font-semibold">User Name</th>
-              <th className="px-6 py-3 text-sm font-semibold">User Email</th>
-              <th className="px-6 py-3 text-sm font-semibold">Role</th>
-              <th className="px-6 py-3 text-sm font-semibold text-center">Actions</th>
+              <th className="px-6 py-4">Name</th>
+              <th className="px-6 py-4">Email</th>
+              <th className="px-6 py-4">Role</th>
+              <th className="px-6 py-4 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <tr
+            {users.map((user, idx) => (
+              <motion.tr
                 key={user._id}
-                className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}
+                className={`transition-all ${idx % 2 === 0 ? 'bg-black/20' : 'bg-white/10'}`}
+                whileHover={{ scale: 1.02 }}
               >
-                <td className="px-6 py-4 text-gray-800">{user.name}</td>
-                <td className="px-6 py-4 text-gray-800">{user.email}</td>
-                <td className="px-6 py-4 text-gray-800 capitalize">{user.role}</td>
+                <td className="px-6 py-4">{user.name}</td>
+                <td className="px-6 py-4">{user.email}</td>
+                <td className="px-6 py-4 capitalize text-blue-300">{user.role}</td>
                 <td className="px-6 py-4 text-center">
                   <div className="flex justify-center gap-4">
-                    <button
-                      className="px-4 py-2 bg-yellow-500 text-white text-sm font-semibold rounded-full hover:bg-yellow-600 transition"
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => handleMakeModerator(user._id)}
                       disabled={user.role === 'moderator' || user.role === 'admin'}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                        user.role === 'moderator' || user.role === 'admin'
+                          ? 'bg-gray-600 cursor-not-allowed'
+                          : 'bg-yellow-500 hover:bg-yellow-600'
+                      }`}
                     >
-                      Make Moderator
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-[#006dc7]   text-white text-sm font-semibold rounded-full hover:bg-blue-600 transition"
+                      <FaUserCog /> Moderator
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => handleMakeAdmin(user._id)}
                       disabled={user.role === 'admin'}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                        user.role === 'admin'
+                          ? 'bg-gray-600 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700'
+                      }`}
                     >
-                      Make Admin
-                    </button>
+                      <FaUserShield /> Admin
+                    </motion.button>
                   </div>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

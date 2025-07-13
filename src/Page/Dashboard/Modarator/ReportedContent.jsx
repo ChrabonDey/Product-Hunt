@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import { motion } from "framer-motion";
+import { FaEye, FaTrashAlt } from "react-icons/fa";
 
 const ReportedContent = () => {
   const axiosSecure = UseAxiosSecure();
@@ -20,12 +22,10 @@ const ReportedContent = () => {
     fetchReportedProducts();
   }, [axiosSecure]);
 
-  // Handle view details
   const handleViewDetails = (productId) => {
     navigate(`/ProductPage/${productId}`);
   };
 
-  // Handle delete product
   const handleDeleteProduct = (productId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -39,9 +39,8 @@ const ReportedContent = () => {
         try {
           const response = await axiosSecure.delete(`/product/${productId}`);
           if (response.status === 200) {
-            // Remove the deleted product from the UI
-            setReportedProducts((prevProducts) =>
-              prevProducts.filter((product) => product._id !== productId)
+            setReportedProducts((prev) =>
+              prev.filter((product) => product._id !== productId)
             );
             Swal.fire("Deleted!", "The product has been deleted.", "success");
           }
@@ -53,45 +52,47 @@ const ReportedContent = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-        <h1 className="text-4xl font-bold text-center  mb-8">Reported <span className='text-[#006dc7]'>Products</span></h1>
-      <div className="overflow-x-auto shadow-lg rounded-lg">
-        <table className="table-auto w-full border-collapse border border-gray-300 bg-white">
-          <thead>
-            <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 text-left border-b border-gray-300">Product Name</th>
-              <th className="py-3 px-6 text-center border-b border-gray-300">Actions</th>
+    <div className="min-h-screen p-6  text-white">
+      <h1 className="text-4xl font-bold text-center mb-10">
+        Reported <span className="text-[#00b4d8]">Products</span>
+      </h1>
+
+      <div className="overflow-x-auto bg-[#1a1a1a]/60 backdrop-blur-md border border-[#2c2c2c] rounded-2xl shadow-[0_0_30px_rgba(0,255,255,0.05)]">
+        <table className="w-full table-auto text-sm">
+          <thead className="bg-[#111] border-b border-[#2c2c2c]">
+            <tr className="uppercase text-[#00f2ff] tracking-wider text-left">
+              <th className="py-4 px-6">Product Name</th>
+              <th className="py-4 px-6 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="text-gray-700 text-sm">
+          <tbody>
             {reportedProducts.length > 0 ? (
               reportedProducts.map((product) => (
-                <tr key={product._id} className="hover:bg-gray-50">
-                  <td className="py-3 px-6 text-left border-b border-gray-300">
-                    {product.name}
-                  </td>
-                  <td className="py-3 px-6 text-center border-b border-gray-300 space-x-2">
+                <motion.tr
+                  key={product._id}
+                  whileHover={{ scale: 1.02 }}
+                  className="border-b border-[#2c2c2c] hover:bg-[#222]"
+                >
+                  <td className="py-4 px-6 text-white font-medium">{product.name}</td>
+                  <td className="py-4 px-6 text-center space-x-4">
                     <button
-                      className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded transition duration-200"
                       onClick={() => handleViewDetails(product._id)}
+                      className="inline-flex items-center gap-1 bg-[#00b4d8] hover:bg-[#009dc2] text-white px-3 py-2 rounded-md text-xs font-semibold transition"
                     >
-                      View Details
+                      <FaEye /> View
                     </button>
                     <button
-                      className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded transition duration-200"
                       onClick={() => handleDeleteProduct(product._id)}
+                      className="inline-flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-xs font-semibold transition"
                     >
-                      Delete
+                      <FaTrashAlt /> Delete
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="2"
-                  className="py-6 text-center text-gray-500 text-lg font-semibold"
-                >
+                <td colSpan="2" className="text-center py-10 text-gray-400 text-lg">
                   No reported products found.
                 </td>
               </tr>

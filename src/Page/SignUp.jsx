@@ -1,205 +1,153 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { updateProfile } from 'firebase/auth'; // Import updateProfile from Firebase
+import { updateProfile } from 'firebase/auth';
 import { authContext } from '../Provider/AuthProvider';
 import UseAuth from '../Hooks/UseAuth';
 import ani from '../assets/Animation - 1736907629598.json';
 import Lottie from 'lottie-react';
 import { FaGoogle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { useContext } from 'react';
+import { motion } from 'framer-motion';
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { googleSign } = UseAuth();
+  const { createUser } = useContext(authContext);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { createUser } = useContext(authContext);
 
   const onSubmit = (data) => {
     createUser(data.email, data.password)
       .then((result) => {
-        const loggedUser = result.user;
-       
-        updateProfile(loggedUser, {
+        const user = result.user;
+        updateProfile(user, {
           displayName: data.name,
           photoURL: data.photoURL,
-        })
-          .then(() => {
-            Swal.fire({
-              title: 'Signup Successful!',
-              text: 'Welcome to Bistro Boss!',
-              icon: 'success',
-              draggable: true,
-            });
-            navigate('/'); 
-          })
-          .catch((error) => {
-            console.error('Profile Update Error:', error);
-            Swal.fire({
-              title: 'Profile Update Failed!',
-              text: error.message,
-              icon: 'error',
-              draggable: true,
-            });
-          });
+        }).then(() => {
+          Swal.fire("Signup Successful!", "Welcome to Prodct Hunt!", "success");
+          navigate('/');
+        }).catch((err) => {
+          Swal.fire("Profile Update Failed", err.message, "error");
+        });
       })
       .catch((error) => {
-        console.error('Signup Error:', error);
-        Swal.fire({
-          title: 'Signup Failed!',
-          text: error.message,
-          icon: 'error',
-          draggable: true,
-        });
+        Swal.fire("Signup Failed!", error.message, "error");
       });
   };
 
   const handleGoogle = () => {
     googleSign()
-      .then((res) => {
-        console.log(res.user);
-        Swal.fire({
-          title: 'Signup Successful with Google!',
-          icon: 'success',
-        });
+      .then(() => {
+        Swal.fire("Signup Successful with Google!", "", "success");
         navigate('/');
       })
       .catch((error) => {
-        Swal.fire({
-          title: 'Signup Failed with Google!',
-          text: error.message,
-          icon: 'error',
-        });
+        Swal.fire("Google Signup Failed", error.message, "error");
       });
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full">
-      
-        <div className="md:w-1/2 flex justify-center items-center p-6"> 
-          <Lottie animationData={ani}></Lottie>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex flex-col md:flex-row w-full max-w-5xl bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+      >
+        {/* Lottie animation section */}
+        <div className="w-full md:w-1/2 flex justify-center items-center p-6">
+          <Lottie animationData={ani} className="w-full max-w-md" />
         </div>
 
-      
-        <div className="md:w-1/2 p-8">
-          <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Full Name
-              </label>
+        {/* Form section */}
+        <div className="w-full md:w-1/2 p-10 text-white">
+          <h2 className="text-3xl font-bold mb-6 text-center text-yellow-400">Create an Account</h2>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Full Name */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Full Name</label>
               <input
                 {...register('name', { required: true })}
-                name="name"
-                type="text"
-                id="name"
-                placeholder="Enter your full name"
-                className="input input-bordered w-full mt-2"
+                placeholder="John Doe"
+                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
-              {errors.name && (
-                <span className="text-red-500">Name is required</span>
-              )}
+              {errors.name && <p className="text-red-500 text-sm mt-1">Name is required</p>}
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Email</label>
               <input
                 {...register('email', { required: true })}
-                name="email"
-                type="email"
-                id="email"
-                placeholder="Type your email"
-                className="input input-bordered w-full mt-2"
+                placeholder="email@example.com"
+                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
-              {errors.email && (
-                <span className="text-red-500">Email is required</span>
-              )}
+              {errors.email && <p className="text-red-500 text-sm mt-1">Email is required</p>}
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Password</label>
               <input
-                {...register('password', {
-                  required: true,
-                  minLength: 6,
-                  maxLength: 20,
-                })}
-                name="password"
+                {...register('password', { required: true, minLength: 6, maxLength: 20 })}
                 type="password"
-                id="password"
-                placeholder="Enter your password"
-                className="input input-bordered w-full mt-2"
+                placeholder="••••••••"
+                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               {errors.password && (
-                <span className="text-red-500">Password is required</span>
+                <p className="text-red-500 text-sm mt-1">
+                  Password must be 6-20 characters
+                </p>
               )}
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="photoURL"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Photo URL
-              </label>
+            {/* Photo URL */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Photo URL</label>
               <input
                 {...register('photoURL', { required: true })}
-                name="photoURL"
-                type="text"
-                id="photoURL"
-                placeholder="Enter a photo URL"
-                className="input input-bordered w-full mt-2"
+                placeholder="https://example.com/photo.jpg"
+                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
-              {errors.photoURL && (
-                <span className="text-red-500">Photo URL is required</span>
-              )}
+              {errors.photoURL && <p className="text-red-500 text-sm mt-1">Photo URL is required</p>}
             </div>
 
-            <button type="submit" className="btn btn-primary w-full">
+            {/* Submit */}
+            <button
+              type="submit"
+              className="w-full py-2 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg transition"
+            >
               Sign Up
             </button>
           </form>
 
-          <div className="text-center mt-4">
-            <p>
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-300">
               Already have an account?{' '}
-              <Link to="/login" className="text-blue-500 hover:underline">
+              <Link to="/login" className="text-yellow-400 hover:underline">
                 Login Here
               </Link>
             </p>
-            <p className="mt-4">Or sign up with</p>
-            <div className="flex justify-center space-x-4 mt-2">
+
+            <div className="mt-6">
+              <p className="text-sm mb-2">Or sign up with</p>
               <button
                 onClick={handleGoogle}
-                className="btn btn-primary w-full rounded-full bg-transparent btn-outline"
+                className="w-full flex items-center justify-center gap-3 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
               >
-                <span className="icon flex justify-evenly gap-3">
-                  <FaGoogle /> Google
-                </span>
+                <FaGoogle className="text-lg" />
+                <span className="text-sm font-medium">Continue with Google</span>
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

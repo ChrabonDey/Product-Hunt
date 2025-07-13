@@ -5,6 +5,7 @@ import animation from '../assets/Animation.json';
 import Lottie from 'lottie-react';
 import { FaGoogle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 
 const Login = () => {
   const { googleSign, signIn } = UseAuth(); 
@@ -19,116 +20,97 @@ const Login = () => {
 
     signIn(email, password)
       .then((result) => {
-        const user = result.user;
-        Swal.fire({
-          title: "Successfully Logged In",
-          icon: "success",
-          showClass: {
-            popup: `animate__animated animate__fadeInUp animate__faster`,
-          },
-          hideClass: {
-            popup: `animate__animated animate__fadeOutDown animate__faster`,
-          },
-        });
+        Swal.fire("Success", "You are logged in!", "success");
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Login Failed",
-          text: error.message,
-          icon: "error",
-        });
+        Swal.fire("Login Failed", error.message, "error");
       });
   };
 
   const handleGoogle = () => {
     googleSign()
-      .then((res) => {
-        const user = res.user;
-        Swal.fire({
-          title: "Successfully Logged In",
-          icon: "success",
-          showClass: {
-            popup: `animate__animated animate__fadeInUp animate__faster`,
-          },
-          hideClass: {
-            popup: `animate__animated animate__fadeOutDown animate__faster`,
-          },
-        });
+      .then(() => {
+        Swal.fire("Success", "You are logged in!", "success");
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Login Failed",
-          text: error.message,
-          icon: "error",
-        });
+        Swal.fire("Login Failed", error.message, "error");
       });
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full">
-      
-        <div className="md:w-1/2 flex justify-center items-center p-6">
-          <Lottie animationData={animation} />
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex flex-col md:flex-row w-full max-w-5xl bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+      >
+        {/* Left Lottie Animation */}
+        <div className="w-full md:w-1/2 flex justify-center items-center p-6">
+          <Lottie animationData={animation} className="w-full max-w-md" />
         </div>
 
-        <div className="md:w-1/2 p-8">
-          <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        {/* Right Form Section */}
+        <div className="w-full md:w-1/2 p-10 text-white">
+          <h2 className="text-3xl font-bold mb-6 text-center text-yellow-400">Welcome Back</h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium mb-1">
                 Email
               </label>
               <input
                 name="email"
                 type="email"
-                id="email"
-                placeholder="Type here"
-                className="input input-bordered w-full mt-2"
+                required
+                placeholder="you@example.com"
+                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium mb-1">
                 Password
               </label>
               <input
                 name="password"
                 type="password"
-                id="password"
-                placeholder="Enter your password"
-                className="input input-bordered w-full mt-2"
+                required
+                placeholder="********"
+                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
 
-            <button type="submit" className="btn btn-primary w-full">
+            <button
+              type="submit"
+              className="w-full py-2 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg transition"
+            >
               Sign In
             </button>
           </form>
 
-          <div className="text-center mt-4">
-            <p>
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-300">
               New here?{" "}
-              <Link to="/signup" className="text-blue-500 hover:underline">
+              <Link to="/signup" className="text-yellow-400 hover:underline">
                 Create a New Account
               </Link>
             </p>
-            <p className="mt-4">Or sign in with</p>
-            <div className="flex justify-center space-x-4 mt-2">
+
+            <div className="mt-6">
+              <p className="text-sm mb-2">Or sign in with</p>
               <button
                 onClick={handleGoogle}
-                className="btn btn-primary w-full rounded-full bg-transparent btn-outline"
+                className="w-full flex items-center justify-center gap-3 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition"
               >
-                <span className="icon flex justify-evenly gap-3">
-                  <FaGoogle /> Google
-                </span>
+                <FaGoogle className="text-lg" />
+                <span className="text-sm font-medium">Continue with Google</span>
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

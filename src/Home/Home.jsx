@@ -5,6 +5,8 @@ import TrendingProducts from '../Page/TrendingProducts';
 import CouponCarousel from '../Page/CouponCarousel';
 import About from '../Page/About/About';
 import Contact from '../Page/Contact/Contact';
+import Aseets from '../Page/Aseets';
+
 
 const Home = () => {
     return (
@@ -30,8 +32,8 @@ const Home = () => {
         
       </section>
 
-      <section >
-        <Contact></Contact>
+      <section>
+     <Aseets></Aseets>
       </section>
       
 

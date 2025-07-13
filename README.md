@@ -125,7 +125,7 @@ ProductHunt/
    cd ../server && npm run dev
    ```
 
-5. Open the application in your browser: [http://localhost:3000](http://localhost:3000)
+5. Open the application in your browser: [https://product-hunt-server.onrender.com](https://product-hunt-server.onrender.com)
 
 ---
 

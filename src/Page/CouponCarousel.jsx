@@ -5,7 +5,8 @@ import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import image3 from "../assets/rb_50073.png";
+import { motion } from "framer-motion";
+import image3 from "../assets/sell-bofer.jpg";
 import image4 from "../assets/diamond-lattice.webp";
 import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 import UseAuth from "../Hooks/UseAuth";
@@ -52,8 +53,7 @@ const CouponCarousel = () => {
 
   return (
     <div
-      className="my-6 bg-gradient-to-r from-[#dbefff] to-[#e0f7ff] px-4 md:px-20 rounded-lg shadow-lg h-[60vh] md:h-[70vh]"
-      style={{ backgroundImage: `url("${image4}")` }}
+      className="my-6 bg-black px-4 md:px-20 py-10 rounded-lg shadow-2xl h-[60vh] md:h-[70vh] text-white"
     >
       <Swiper
         pagination={{ clickable: true }}
@@ -68,42 +68,47 @@ const CouponCarousel = () => {
           coupons.map((coupon) => (
             <SwiperSlide key={coupon.id}>
               <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full h-full p-6">
-                <div className="flex-1 text-start text-black">
+                <div className="flex-1 text-start">
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-xl font-semibold bg-white text-blue-600 px-4 py-2 rounded-full shadow-md">
+                    <span className="text-lg font-semibold bg-yellow-500 text-black px-4 py-2 rounded-full shadow-md">
                       Expiry: {coupon.expiryDate.split("T")[0]}
                     </span>
-                    <span className="text-xl font-semibold bg-white text-green-600 px-4 py-2 rounded-full shadow-md">
+                    <span className="text-lg font-semibold bg-yellow-400 text-black px-4 py-2 rounded-full shadow-md">
                       Code: {coupon.code}
                     </span>
                   </div>
-                  <h2 className="text-4xl md:text-5xl font-bold mb-4 text-blue-700">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 text-yellow-400">
                     {coupon.discount}% OFF
                   </h2>
-                  <p className="text-lg opacity-80 mb-4 text-gray-700">
+                  <p className="text-lg opacity-90 mb-4 text-white/80">
                     {coupon.description}
                   </p>
                   <button
                     onClick={() => applyCoupon(coupon.discount)}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-all"
+                    className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 text-black px-6 py-2 rounded-lg shadow-yellow-400/40 shadow-md hover:brightness-110 transition-all font-semibold"
                   >
                     Redeem Now
                   </button>
                 </div>
-                <div className="flex-1 flex justify-center items-center">
+                <motion.div
+                  className="flex-1 flex justify-center items-center"
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: [0.95, 1, 0.95] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                >
                   <img
                     src={image3}
                     alt="Coupon Visual"
-                    className="rounded-full w-80 h-80 object-cover shadow-lg border-4 border-white"
+                    className="rounded-full w-80 h-80 object-cover shadow-[0_0_60px_rgba(255,255,0,0.5)]"
                   />
-                </div>
+                </motion.div>
               </div>
             </SwiperSlide>
           ))
         ) : (
           <SwiperSlide>
             <div className="flex justify-center items-center h-full">
-              <p className="text-xl text-gray-700">No coupons available.</p>
+              <p className="text-xl text-yellow-400">No coupons available.</p>
             </div>
           </SwiperSlide>
         )}

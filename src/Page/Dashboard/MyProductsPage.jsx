@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { FaTrash, FaEdit } from "react-icons/fa"; // Import icons
+import { FaTrash, FaEdit, FaBoxOpen } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import UseAuth from "../../Hooks/UseAuth";
-
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 
 const MyProductsPage = () => {
@@ -53,69 +52,89 @@ const MyProductsPage = () => {
     navigate(`/dashboard/update-product/${id}`);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen text-white">
+        Loading...
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-4">My Products</h2>
-      <div className="overflow-x-auto">
-        <table className="table w-full border-collapse border border-gray-300 bg-white rounded-lg shadow">
-          <thead className="bg-gray-200 text-gray-700">
-            <tr>
-              <th className="px-4 py-2 border border-gray-300 text-left">
-                Product Name
-              </th>
-              <th className="px-4 py-2 border border-gray-300 text-left">
-                Number of Votes
-              </th>
-              <th className="px-4 py-2 border border-gray-300 text-left">
-                Status
-              </th>
-              <th className="px-4 py-2 border border-gray-300 text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.length > 0 ? (
-              products.map((product) => (
-                <tr key={product._id} className="hover:bg-gray-100">
-                  <td className="px-4 py-2 border border-gray-300">
-                    {product.name}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300">
-                    {product.votes || 0}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300">
-                    {product.status || "Pending"}
-                  </td>
-                  <td className="px-4 py-2 border border-gray-300 text-center flex justify-center gap-2">
-                    <button
-                      className="btn btn-sm btn-outline btn-primary flex items-center gap-1"
-                      onClick={() => handleUpdate(product._id)}
-                    >
-                      <FaEdit /> Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline btn-error flex items-center gap-1"
-                      onClick={() => handleDelete(product._id)}
-                    >
-                      <FaTrash /> Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center py-4 text-gray-500">
-                  No products found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+    <section className="min-h-screen bg-gradient-to-br from-black via-[#101820] to-black p-6 text-white">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
+          <FaBoxOpen className="inline-block mr-2 text-[#00b4d8]" />
+          My <span className="text-[#00b4d8]">Products</span>
+        </h2>
+
+        <div className="overflow-x-auto bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg">
+         <table className="min-w-full text-sm table-fixed">
+  <thead className="bg-[#1c1c1c] text-[#00f2ff] uppercase">
+    <tr>
+      <th className="w-1/3 px-4 py-3 text-center">Product</th>
+      <th className="w-1/6 px-4 py-3 text-center">Votes</th>
+      <th className="w-1/6 px-4 py-3 text-center">Status</th>
+      <th className="w-1/3 px-4 py-3 text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {products.length > 0 ? (
+      products.map((product) => (
+        <tr
+          key={product._id}
+          className="border-t border-white/10 hover:bg-white/5 transition"
+        >
+          {/* Centered content with flex */}
+          <td className="px-4 py-3 text-center font-medium">{product.name}</td>
+          <td className="px-4 py-3 text-center">{product.votes || 0}</td>
+          <td className="px-4 py-3 text-center capitalize">
+            <span
+              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                product.status === "accepted"
+                  ? "bg-green-600 text-white"
+                  : product.status === "rejected"
+                  ? "bg-red-500 text-white"
+                  : "bg-yellow-500 text-black"
+              }`}
+            >
+              {product.status || "pending"}
+            </span>
+          </td>
+          <td className="px-4 py-3 text-center">
+            <div className="flex justify-center gap-2">
+              <button
+                className="inline-flex items-center gap-1 px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                onClick={() => handleUpdate(product._id)}
+              >
+                <FaEdit /> Edit
+              </button>
+              <button
+                className="inline-flex items-center gap-1 px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-xs"
+                onClick={() => handleDelete(product._id)}
+              >
+                <FaTrash /> Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td
+          colSpan="4"
+          className="text-center py-6 text-gray-400 font-semibold"
+        >
+          No products found.
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
+
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
