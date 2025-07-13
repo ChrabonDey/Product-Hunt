@@ -23,7 +23,7 @@ import AdminCouponsPage from '../Page/Dashboard/Admin/AdminCuponPage';
 import NotFound from '../NotFound';
 import About from '../Page/About/About';
 import Contact from '../Page/Contact/Contact';
-import FaqPage from '../Page/Dashboard/FAQpage';
+import FaqPage from '../Page/Dashboard/FaqPage';
 import MyProductStatistics from '../Page/Dashboard/MyProductStatistics';
 import TextToImage from '../Page/TextToImage';
 
