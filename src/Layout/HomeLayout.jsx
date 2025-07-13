@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import Footer from "../Shared/Footer";
 import Navbar from "../Shared/Navbar";
-import BackgroundAnimation from "../BackGroundAnimation";
+import BackgroundAnimation from "../BackgroundAnimation";
 
 const HomeLayout = () => {
   const [isSticky, setSticky] = useState(" ");
