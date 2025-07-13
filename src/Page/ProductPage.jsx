@@ -152,7 +152,7 @@ const ProductPage = () => {
               href={product.external_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 text-yellow-300 border border-white/20 backdrop-blur-md rounded-full hover:bg-yellow-400 hover:text-black transition font-medium"
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 text-yellow-300 border border-white/20 backdrop-blur-md rounded-full hover:bg-yellow-400 hover:text-black transition font-medium cursor-pointer"
             >
               <FaExternalLinkAlt /> Visit Site
             </a>
