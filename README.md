@@ -5,7 +5,8 @@ Welcome to **Product Hunt**, an innovative platform for discovering and sharing 
 ---
 
 ## 🔗 **Live Site URL**
-[Visit Product Hunt Live!]([https://product-hunt-687fb.web.app/](https://product-hunt-687fb.web.app/))
+[Visit Product Hunt Live!](https://product-hunt-687fb.web.app/)
+
 
 ---
 
